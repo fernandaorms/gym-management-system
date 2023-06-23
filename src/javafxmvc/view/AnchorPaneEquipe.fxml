@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="980.0" styleClass="body" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="src.javafxmvc.controller.AnchorPaneEquipeController">
+   <children>
+      <ImageView fx:id="imageViewLogo" fitHeight="75.0" fitWidth="200.0" layoutX="390.0" layoutY="165.0" pickOnBounds="true" preserveRatio="true" />
+      <Label layoutX="385.0" layoutY="305.0" style="-fx-font-size: 16;" styleClass="h1" text="Equipe de Desenvolvimento" textFill="#aaaaaa" />
+      <Label fx:id="labelEquipe" layoutX="148.0" layoutY="353.0" prefHeight="38.0" prefWidth="684.0" style="-fx-font-size: 26; -fx-alignment: center; -fx-font-weight: 600; -fx-font-weight: bold;" text="Gabriely Machado Carrari" textFill="#333333" />
+   </children>
+</AnchorPane>

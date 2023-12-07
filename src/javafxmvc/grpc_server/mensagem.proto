@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+service EquipeService {
+    rpc ObterEquipeInfo (InfoEquipeRequest) returns (InfoEquipeResponse) {}
+    rpc VerificarCupom (VerificarCupomRequest) returns (VerificarCupomResponse) {}
+}
+
+message InfoEquipeRequest {
+    int32 id = 1;
+}
+
+message InfoEquipeResponse {
+    repeated string membros = 1;
+}
+
+message VerificarCupomRequest {
+    string cupom = 1;
+}
+
+message VerificarCupomResponse {
+    bool valido = 1;
+}

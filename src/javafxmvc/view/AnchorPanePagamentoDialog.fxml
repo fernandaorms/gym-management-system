@@ -5,30 +5,39 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="720.0" prefWidth="980.0" styleClass="body" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="src.javafxmvc.controller.AnchorPanePagamentoDialogController">
+<AnchorPane prefHeight="720.0" prefWidth="980.0" styleClass="body" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="src.javafxmvc.controller.AnchorPanePagamentoDialogController">
    <children>
       <Label fx:id="labelTitulo" layoutX="70.0" layoutY="50.0" styleClass="h1" stylesheets="@../style.css" />
-      <Group layoutX="313.0" layoutY="150.0">
+      <Group layoutX="313.0" layoutY="110.0">
          <children>
             <Label text="Aluno" />
             <ComboBox fx:id="comboBoxAlunos" layoutY="28.0" onAction="#handleComboBoxAlunos" prefWidth="150.0" styleClass="input" />
             <Label fx:id="labelErroAluno" layoutX="1.0" layoutY="87.0" styleClass="error" stylesheets="@../style.css" />
          </children>
       </Group>
-      <Group layoutX="313.0" layoutY="282.0">
+      <Group layoutX="313.0" layoutY="223.0">
          <children>
             <Label text="Data" />
             <DatePicker fx:id="datePicker" editable="false" layoutY="28.0" />
             <Label fx:id="labelErroData" layoutX="1.0" layoutY="87.0" styleClass="error" stylesheets="@../style.css" />
          </children>
       </Group>
-      <Group layoutX="313.0" layoutY="414.0">
+      <Group layoutX="313.0" layoutY="342.0">
          <children>
             <Label text="Valor" />
             <Label fx:id="labelValor" layoutY="25.0" styleClass="input" />
             <Label fx:id="labelDesconto" layoutY="87.0" styleClass="error" stylesheets="@../style.css" />
+         </children>
+      </Group>
+      <Group layoutX="313.0" layoutY="455.0">
+         <children>
+            <Label text="Inserir Cupom" />
+            <TextField fx:id="textFieldCupom" layoutY="25.0" style="-fx-pref-width: 275;" styleClass="input" />
+            <Label fx:id="labelErroCupom" layoutY="87.0" styleClass="error" stylesheets="@../style.css" />
+            <Button fx:id="buttonAplicarCupom" layoutX="275.0" layoutY="26.0" mnemonicParsing="false" onAction="#handleButtonAplicarCupom" prefHeight="43.0" prefWidth="68.0" style="-fx-pref-width: 105; -fx-pref-height: 50; -fx-font-size: 12;" styleClass="cancel" text="Aplicar Cupom" />
          </children>
       </Group>
       <Group layoutX="392.0" layoutY="582.0">

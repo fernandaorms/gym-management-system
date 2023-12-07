@@ -4,6 +4,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+
+import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -11,12 +14,16 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.sql.Connection;
 import java.time.LocalDate;
 
 import src.javafxmvc.model.domain.Aluno;
+import src.javafxmvc.grpc_server.EquipeServiceGrpc;
+import src.javafxmvc.grpc_server.Mensagem.VerificarCupomRequest;
+import src.javafxmvc.grpc_server.Mensagem.VerificarCupomResponse;
 import src.javafxmvc.model.dao.AlunoDAO;
 import src.javafxmvc.model.domain.Pagamento;
 import src.javafxmvc.model.dao.PagamentoDAO;
@@ -34,6 +41,8 @@ public class AnchorPanePagamentoDialogController implements Initializable {
     @FXML
     private Label labelDesconto;
     @FXML
+    private TextField textFieldCupom;
+    @FXML
     private Label labelTitulo;
 
     //labels de erro
@@ -41,12 +50,16 @@ public class AnchorPanePagamentoDialogController implements Initializable {
     private Label labelErroAluno;
     @FXML
     private Label labelErroData;
+    @FXML
+    private Label labelErroCupom;
 
     private List<Aluno> listAlunos = new ArrayList<>();
     private ObservableList<Aluno> observableListAlunos;
     private Stage dialogStage;
     private boolean buttonConfirmed = false;
     private Pagamento pagamento;
+    protected boolean cupomAplicado = false;
+    
 
     //Atributos para manipulação de Banco de Dados
     private final Database database = DatabaseFactory.getDatabase("postgresql");
@@ -124,6 +137,39 @@ public class AnchorPanePagamentoDialogController implements Initializable {
         }
     }
 
+    public void handleButtonAplicarCupom(){
+        String cupom = textFieldCupom.getText();
+
+        ManagedChannel channel = ManagedChannelBuilder.forAddress("127.0.0.1", 12345).usePlaintext().build();
+        EquipeServiceGrpc.EquipeServiceBlockingStub stub = EquipeServiceGrpc.newBlockingStub(channel);
+        
+        VerificarCupomRequest request = VerificarCupomRequest.newBuilder().setCupom(cupom).build();
+        VerificarCupomResponse response = stub.verificarCupom(request);
+        if(response.getValido()) {
+            if(cupomAplicado){
+                labelErroCupom.setText("Cupom já aplicado!");
+            }else{
+                float preco = Float.parseFloat(labelValor.getText());
+                cupomAplicado = true;
+                preco *= 0.95;
+                labelValor.setText(String.valueOf(preco));
+                labelErroCupom.setText("Cupom válido! Desconto de 5% aplicado");
+                labelErroCupom.setStyle("-fx-text-fill: #3CB370;");
+            }
+        }else {
+            if(cupomAplicado){
+                cupomAplicado = false;
+                float preco = Float.parseFloat(labelValor.getText());
+                preco /= 0.95;
+                labelValor.setText(String.valueOf(preco));
+            }
+            labelErroCupom.setText("Cupom inválido!");
+            labelErroCupom.setStyle("-fx-text-fill: #FF2E2E;");
+        }
+
+        channel.shutdown();
+    }
+
     public void handleButtonCancel(){
         getDialogStage().close();
     }
@@ -153,11 +199,10 @@ public class AnchorPanePagamentoDialogController implements Initializable {
             labelErroData.setText("A data de pagamento não pode ser futura.");
             qdtErros++;
         }
-        if(qdtErros > 0){
-            return false;
-        }else{
-            return true;
-        }
+        if(qdtErros > 0) return false;
+        
+        return true;
+        
     }
 
 

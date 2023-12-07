@@ -14,15 +14,15 @@ import javafx.fxml.Initializable;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.control.Label;
-import src.javafxmvc.runnable.RunnableEquipe;
 import src.javafxmvc.runnable.RunnableEquipe_Socket;
 
-public class AnchorPaneEquipeController implements Initializable{
+public class AnchorPaneEquipeController_Socket implements Initializable{
     @FXML 
     private ImageView imageViewLogo;
     @FXML
     private Label labelEquipe;
-    
+
+    private Socket socket;
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
@@ -30,10 +30,23 @@ public class AnchorPaneEquipeController implements Initializable{
 
         System.out.println("Conectando no servidor");
 
-        RunnableEquipe equipe = new RunnableEquipe(labelEquipe);
+        try {
+            socket = new Socket("127.0.0.1", 12345);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        RunnableEquipe_Socket equipe = new RunnableEquipe_Socket(socket, labelEquipe);
         Thread thread = new Thread(equipe);
         thread.setName("Thread Equipe");
         thread.start();
+
+        try {
+            DataOutputStream saida = new DataOutputStream(socket.getOutputStream());
+            saida.writeInt(3);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     
     public void loadImages() {

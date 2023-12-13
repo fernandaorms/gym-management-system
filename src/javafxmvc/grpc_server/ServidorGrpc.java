@@ -52,7 +52,6 @@ public class ServidorGrpc {
     private static class EquipeServiceImpl extends EquipeServiceGrpc.EquipeServiceImplBase {
         @Override
         public void obterEquipeInfo(InfoEquipeRequest request, StreamObserver<InfoEquipeResponse> responseObserver) {
-            // Implemente a lógica para obter informações da equipe
             int id = request.getId();
             List<String> equipe = obterMembrosEquipe(id);
             InfoEquipeResponse response = InfoEquipeResponse.newBuilder().addAllMembros(equipe).build();
@@ -62,7 +61,6 @@ public class ServidorGrpc {
 
         @Override
         public void verificarCupom(VerificarCupomRequest request, StreamObserver<VerificarCupomResponse> responseObserver) {
-            // Implemente a lógica para verificar o cupom
             String cupom = request.getCupom();
             boolean valido = verificarCupomValido(cupom);
             VerificarCupomResponse response = VerificarCupomResponse.newBuilder().setValido(valido).build();
